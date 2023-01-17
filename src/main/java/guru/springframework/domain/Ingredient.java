@@ -10,12 +10,19 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+//import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode;
+
 //@Getter
 //@Setter
 //@EqualsAndHashCode(exclude = {"recipe"})
+@Data
+@EqualsAndHashCode(exclude = {"recipe"})
 @Entity
 public class Ingredient {
 
+	//@EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -83,5 +90,5 @@ public class Ingredient {
 	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
 	}
-
+	
 }

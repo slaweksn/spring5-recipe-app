@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import guru.springframework.domain.Category;
 import guru.springframework.domain.Difficulty;
@@ -19,7 +20,9 @@ import guru.springframework.domain.UnitOfMeasure;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {//implements CommandLineRunner {
 
@@ -35,10 +38,12 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {/
 		this.measureRepository = measureRepository;
 	}
 	
+	@Transactional
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		// TODO Auto-generated method stub
 		recipeRepository.saveAll(getRecipes());
+		log.debug("Loading Bootstrao Data");
     }
 
     private List<Recipe> getRecipes() {

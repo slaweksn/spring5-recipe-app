@@ -17,9 +17,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+//import lombok.EqualsAndHashCode;
+
+@Data
 @Entity
 public class Recipe {
 
+	//@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -52,6 +57,21 @@ public class Recipe {
         joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
+	
+	public Recipe addIngredient(Ingredient ingredient) {
+		this.ingredients.add(ingredient);
+		ingredient.setRecipe(this);
+		return this;
+	}
+	
+	public void setNotes(Notes notes) {
+		if(this.notes != null) {
+			this.notes.setRecipe(null);
+		}
+		this.notes = notes;
+		this.notes.setRecipe(this);
+	}
+	
 	
 	public Long getId() {
 		return id;
@@ -128,12 +148,6 @@ public class Recipe {
 	public Set<Ingredient> getIngredients() {
 		return ingredients;
 	}
-
-	public Recipe addIngredient(Ingredient ingredient) {
-		this.ingredients.add(ingredient);
-		ingredient.setRecipe(this);
-		return this;
-	}
 	
 	public void setIngredients(Set<Ingredient> ingredients) {
 		this.ingredients = ingredients;
@@ -150,15 +164,7 @@ public class Recipe {
 	public Notes getNotes() {
 		return notes;
 	}
-
-	public void setNotes(Notes notes) {
-		if(this.notes != null) {
-			this.notes.setRecipe(null);
-		}
-		this.notes = notes;
-		this.notes.setRecipe(this);
-	}
-
+	
 	public Set<Category> getCategories() {
 		return categories;
 	}
